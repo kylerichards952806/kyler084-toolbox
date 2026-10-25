@@ -45,6 +45,12 @@ for d in /sys/kernel/debug/dri/0/debug/panic /sys/kernel/debug/sde_rotator0/evtl
     [ -w "$d" ] && echo 0 > "$d" 2>/dev/null
 done
 
+# Keep the panel at 120 Hz. 60 Hz stays advertised for video apps that ask for
+# it, but leaving the minimum at 0 lets Android drop an idle screen to 60 and
+# pull it straight back, which on this panel is a visible re-timing.
+settings put system min_refresh_rate 120
+settings put system peak_refresh_rate 120
+
 # Record every boot in /data/local/tmp/bootlog so an unexplained restart can be
 # explained from the next boot (a soft reboot leaves no last_kmsg).
 if [ -x "$MODDIR/bootlog.sh" ]; then
