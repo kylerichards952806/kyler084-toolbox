@@ -1,0 +1,7 @@
+id=kyler084_toolbox
+name=kyler084 toolbox
+version=v1.0
+versionCode=1
+author=kyler084
+description=One press on Action: reapplies the SUSFS hiding profile, checks the Play Integrity setup (Pixel 6a PIF + Tricky Store) and repairs what drifted. Reports kernel, SUSFS and keybox state.
+updateJson=https://raw.githubusercontent.com/kylerichards952806/kyler084-toolbox/main/update.json
