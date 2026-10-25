@@ -22,7 +22,7 @@ fi
 
 "$SUSFS_BIN" enable_log 1 >/dev/null 2>&1
 
-for p in /data/adb/ksu /data/adb/ksud /data/adb/susfs4ksu; do
+for p in /data/adb/ksu /data/adb/ksud; do
     "$SUSFS_BIN" add_sus_path "$p" >/dev/null 2>&1
 done
 
@@ -35,6 +35,20 @@ done
 mp=/data/adb/modules/susfs4ksu/module.prop
 if [ -f "$mp" ] && file_blank "$mp" && [ -s "$MODDIR/susfs-module.prop" ]; then
     cat "$MODDIR/susfs-module.prop" > "$mp"
+fi
+
+# The SDE debug block ships armed to panic() on the first display error
+# (panic_on_err defaults to 1). A recoverable DPU fault then reboots the phone
+# with no log anyone can read afterwards. Keep the register dump, drop the
+# panic: errors still land in dmesg, the phone stays up.
+for d in /sys/kernel/debug/dri/0/debug/panic /sys/kernel/debug/sde_rotator0/evtlog/panic; do
+    [ -w "$d" ] && echo 0 > "$d" 2>/dev/null
+done
+
+# Record every boot in /data/local/tmp/bootlog so an unexplained restart can be
+# explained from the next boot (a soft reboot leaves no last_kmsg).
+if [ -x "$MODDIR/bootlog.sh" ]; then
+    "$MODDIR/bootlog.sh" >/dev/null 2>&1 &
 fi
 
 sync

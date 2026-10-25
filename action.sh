@@ -35,7 +35,6 @@ else
     cat > "$SUSFS_DIR/sus_path.txt" <<'EOF'
 /data/adb/ksu
 /data/adb/ksud
-/data/adb/susfs4ksu
 EOF
 
     cat > "$SUSFS_DIR/try_umount.txt" <<'EOF'
